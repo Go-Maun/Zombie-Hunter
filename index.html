@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link href="styleSheet\styleSheet.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+
+        <h1>Click The Zombies to Kill Them!</h1>
+
+        <h2 id="score">Score: 0</h2>
+
+        <img src="images\zombie.png" id="zombie">
+
+        <img src="images\explosion.gif" id="explosion">
+
+        <audio src="sound\die.wav" id = deathSound></audio>
+
+        <div id="reset">
+            <button id="button">Reset</button>
+        </div>
+
+        <script>
+            
+            let width = window.innerWidth
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
+
+            let height = window.innerHeight
+            || document.documentElement.clientHeight
+            || document.body.clientHeight;
+            
+            let button_pos = height - 200
+
+            document.getElementById('zombie').style = "left:"+(width/2.5)+"px;top:"+(height/3)+"px;position:fixed";
+            document.getElementById('explosion').style = "left:"+(width/2.5)+"px;top:"+(height/3)+"px;position:fixed";
+            document.getElementById('reset').style = "margin-top:" + button_pos + "px";
+
+            function change_location() {
+
+                let currentWidth = window.innerWidth
+                || document.documentElement.clientWidth
+                || document.body.clientWidth;
+
+                let currentHeight = window.innerHeight
+                || document.documentElement.clientHeight
+                || document.body.clientHeight;
+                
+                let x = Math.random() * (currentWidth*(7/9));
+                let y = Math.random() * (currentHeight*(7/9));
+                document.getElementById("zombie").style.display = "block";
+                document.getElementById("zombie").style.position = "fixed";
+                document.getElementById("zombie").style.left = x + "px";
+                document.getElementById("zombie").style.top = y + "px";
+
+            }
+
+            function die() {
+
+                document.getElementById("explosion").style.left = document.getElementById("zombie").style.left;
+                document.getElementById("explosion").style.top = document.getElementById("zombie").style.top;
+                document.getElementById("explosion").style.display = "block";
+                document.getElementById("deathSound").play()
+                setTimeout (function(){document.getElementById("explosion").style.display = "none"; document.getElementById("zombie").style.display = "none"}, 500);
+
+            }
+            
+            let score = 0;
+            
+            function change_score() {
+                is_dead = true;
+                score++;
+                die();
+                document.getElementById("score").innerHTML = "Score: " + score;
+                setTimeout(function(){is_dead = false}, 400);
+            }
+
+            function reset() {
+                score = 0;
+                document.getElementById('zombie').style = "left:"+(width/2.5)+"px;top:"+(height/3)+"px;position:fixed";
+                document.getElementById("score").innerHTML = "Score: " + score;
+            }
+
+            setInterval (function(){change_location();}, 2000);
+            document.getElementById("zombie").onclick = change_score;
+            document.getElementById("button").onclick = reset;
+
+        </script>
+    </body>
+
+</html>
